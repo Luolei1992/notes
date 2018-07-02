@@ -190,6 +190,34 @@ git、svn
   - 命令:`git branch -d [分支名]`
     + 删除指定分支，-d参数表示要执行删除操作
 
+### submodule的用法（每次提交前注意分支选着git branch git checkout [分支]）
+  - 命令：`git submodule add -b [path] [存放的目录]`
+  - 命令：`git status` 查看需要提交的文件
+    > 可以看到多了两个需要提交的文件：.gitmodules和 pod-library
+
+    > 这两个文件都需要提交到父模块
+
+    > 要改变子模块 `cd [子模块]` `git status` `git commit -a -m 'test submodule'` `git push`
+
+    > 提交父模块 `cd ..` `git commit -m 'update submodule'` `git pull`
+
+    > 更新submodule另一种方式 父目录下直接`git submodule foreach git pull`
+### clone带有子项目的项目
+  - 采用递归参数 --recursive
+    > 命令 `git clone -b [path] --recursive` 会自动下载子项目
+    > 先下载父项目,进入子项目目录，再初始化子项目，`git submodule init` ，更新子项目`git submodule update`
+### 删除submodule
+  - 命令
+  ```
+    cd [子目录]
+    git rm --cached [子目录]
+    rm -rf [子目录]
+    rm .gitmodules
+
+    更改配置文件：vim .git/config 删除submodule的相关内容
+    提交：git commit -a -m 'remove pod-library submodule'
+  ```
+
 ### git提交中的冲突
   - 如果git不能自动合并分支，就会有冲突，我们需要手动解决冲突，然后再次提交
 
