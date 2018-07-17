@@ -191,7 +191,7 @@ git、svn
     + 删除指定分支，-d参数表示要执行删除操作
 
 ### submodule的用法（每次提交前注意分支选着git branch git checkout [分支]）
-  - 命令：`git submodule add -b [path] [存放的目录]`
+  - 命令：`git submodule add -b [path] [存放的目录] [分支]`
   - 命令：`git status` 查看需要提交的文件
     > 可以看到多了两个需要提交的文件：.gitmodules和 pod-library
 
