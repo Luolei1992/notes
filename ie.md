@@ -9,6 +9,8 @@
 - 7.for in循环不支持
 - 8.axios在ie8下content-type设置不成功且会把headers置为null（contentType:"application/json; charset=UTF-8"）
 - 9.事件监听
+- 10.jsonStringfy会把中文转换成unicode ，eval再转回来
+- 11.hover后状态不消失
 
 ## firefox 43
 
