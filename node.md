@@ -5,7 +5,7 @@
     - nvm install <node版本号>
     - nvm use <node版本号>
 
-## 二、commonJs规范(node遵循的是commonJs规范)
+## 二、node遵循的是commonJs规范
 ```
 function add (a,b){
     return a+b
@@ -66,3 +66,6 @@ console.log(arr)   //[1,2,3]
     ```
     process.env.NODE_ENV  //通过获取的环境来改变配置，线上线下环境配置等
     ```
+
+## 八、接口开发
+ > 后续补充实例
