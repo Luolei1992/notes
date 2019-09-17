@@ -34,7 +34,7 @@
          2：Nginx 服务器,IIS服务器、Tomcat服务器、Node服务器等。
 
 - dns  （domain Name  System） 域名解析系统
-- www.baidu.com  我访问的是一个域名，它要帮我去找ip 等于119.75.217.109 的计算
+- www.baidu.com  我访问的是一个域名，它要帮我去找ip 等于 119.75.217.109 的计算
 
 #### 我们的资源分为两种类型的资源：
 
