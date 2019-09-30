@@ -1040,6 +1040,7 @@ class Cat extends Animal {
 }
 //Property 'name' is private and only accessible within class 'Animal'.
 
+
 //protected
 class Animal {
     protected name;
@@ -1047,18 +1048,330 @@ class Animal {
         this.name = name;
     }
 }
-
 class Cat extends Animal {
     constructor(name) {
         super(name);
         console.log(this.name);
     }
 }
+
+
+//当构造函数修饰为 private 时，该类不允许被继承或者实例化
+class Animal {
+    public name;
+    private constructor (name) {
+        this.name = name;
+  }
+}
+class Cat extends Animal {
+    constructor (name) {
+        super(name);
+    }
+}
+let a = new Animal('Jack');
+// index.ts(1064): TS2675: Cannot extend a class 'Animal'. Class constructor is marked as private.
+// index.ts(1069): TS2673: Constructor of class 'Animal' is private and only accessible within the class declaration.
+
+
+//当构造函数修饰为 protected 时，该类只允许被继承
+class Animal {
+    public name;
+    protected constructor (name) {
+        this.name = name;
+  }
+}
+class Cat extends Animal {
+    constructor (name) {
+        super(name);
+    }
+}
+let a = new Animal('Jack');
+// index.ts(1086): TS2674: Constructor of class 'Animal' is protected and only accessible within the class declaration.
+
+
+//修饰符还可以使用在构造函数参数中，等同于类中定义该属性，使代码更简洁
+class Animal {
+    // public name: string;
+    public constructor (public name) {
+        this.name = name;
+    }
+}
 ```
+2. readonly
+- 只读属性关键字，只允许出现在属性声明或索引签名中
+```ts
+class Animal {
+    readonly name;
+    public constructor(name) {
+        this.name = name;
+    }
+}
+let a = new Animal('Jack');
+console.log(a.name); // Jack
+a.name = 'Tom';// Cannot assign to 'name' because it is a read-only property.
+
+//注意如果 readonly 和其他访问修饰符同时存在的话，需要写在其后面
+class Animal {
+    // public readonly name;
+    public constructor(public readonly name) {
+        this.name = name;
+    }
+}
+```
+3. 抽象类(abstract用于定义其中的抽象类和抽象方法)
+> 什么是抽象类
+```ts
+//抽象类不允许被实例化
+abstract class Animal {
+    public name;
+    public constructor(name) {
+        this.name = name;
+    }
+    public abstract sayHi();
+}
+let a = new Animal('Jack');// Cannot create an instance of the abstract class 'Animal'.
+
+//抽象类的方法必须被子类实现
+abstract class Animal {
+    public name;
+    public constructor(name) {
+        this.name = name;
+    }
+    public abstract sayHi();
+}
+// class Cat extends Animal {//未实现抽象类的方法sayHi
+//     public eat() {
+//         console.log(`${this.name} is eating.`);
+//     }
+// }
+
+//正确方式
+class Cat extends Animal {
+    public sayHi() {
+        console.log(`Meow, My name is ${this.name}`);
+    }
+}
+let cat = new Cat('Tom');
+```
+4. 类的类型
+- 给类加上 TypeScript 的类型很简单，与接口类似
+```ts
+class Animal {
+    name: string;
+    constructor(name: string) {
+        this.name = name;
+    }
+    sayHi(): string {
+      return `My name is ${this.name}`;
+    }
+}
+let a: Animal = new Animal('Jack');
+console.log(a.sayHi()); // My name is Jack
+```
+### 类与接口
+#### 类实现接口
+- 实现（implements）是面向对象中的一个重要概念。一般来讲，一个类只能继承自另一个类，有时候不同类之间可以有一些共有的特性，这时候就可以把特性提取成接口（interfaces），用 implements 关键字来实现。这个特性大大提高了面向对象的灵活性。
+```ts
+//举例来说，门是一个类，防盗门是门的子类。如果防盗门有一个报警器的功能，我们可以简单的给防盗门添加一个报警方法。这时候如果有另一个类，车，也有报警器的功能，就可以考虑把报警器提取出来，作为一个接口，防盗门和车都去实现它
+interface Alarm {
+    alert();
+}
+class Door {
+}
+class SecurityDoor extends Door implements Alarm {
+    alert() {
+        console.log('SecurityDoor alert');
+    }
+}
+class Car implements Alarm {
+    alert() {
+        console.log('Car alert');
+    }
+}
+
+//一个类可以实现多个接口
+interface Alarm {
+    alert();
+}
+interface Light {
+    lightOn();
+    lightOff();
+}
+class Car implements Alarm, Light {
+    alert() {
+        console.log('Car alert');
+    }
+    lightOn() {
+        console.log('Car light on');
+    }
+    lightOff() {
+        console.log('Car light off');
+    }
+}
+```
+#### 接口继承接口
+```ts
+interface Alarm {
+    alert();
+}
+interface LightableAlarm extends Alarm {
+    lightOn();
+    lightOff();
+}
+// class cso implements  Alarm {//这样也行为什么？？？？？？？
+//     lightOn(){
+//         console.log('on')
+//     };
+//     lightOff(){
+//         console.log('off')
+//     };
+//     alert(){
+//         console.log('alert')
+//     }
+// }
+class cso implements  LightableAlarm {
+    lightOn(){
+        console.log('on')
+    };
+    lightOff(){
+        console.log('off')
+    };
+    alert(){
+        console.log('alert')
+    }
+}
+let a = new cso()
+console.log(a.alert())//alert
+console.log(a.lightOn())//on
+//使用 extends 使 LightableAlarm 继承 Alarm;在
+```
+#### 接口继承类
+```ts
+class Point {
+    x: number;
+    y: number;
+}
+interface Point3d extends Point {
+    z: number;
+}
+let point3d: Point3d = {x: 1, y: 2, z: 3};
+```
+#### 混合类型
+```ts
+//接口的形式来定义函数需要符合的形状
+interface SearchFunc {
+    (source: string, subString: string): boolean;
+}
+let mySearch: SearchFunc;
+mySearch = function(source: string, subString: string) {
+    return source.search(subString) !== -1;
+}
+
+//有时候一个函数还有自己的属性和方法
+interface Counter {
+    (start: number): string;
+    interval: number;
+    reset(): void;
+}
+function getCounter(): Counter {
+    let counter = <Counter>function (start: number) { };
+    counter.interval = 123;
+    counter.reset = function () { };
+    return counter;
+}
+let c = getCounter();
+c(10);
+c.reset();
+c.interval = 5.0;
+```
+### 声明合并
+#### 函数合并
+```ts
+//可以用重载定义多个函数类型
+function reverse(x: number): number;
+function reverse(x: string): string;
+function reverse(x: number | string): number | string {
+    if (typeof x === 'number') {
+        return Number(x.toString().split('').reverse().join(''));
+    } else if (typeof x === 'string') {
+        return x.split('').reverse().join('');
+    }
+}
+```
+#### 接口合并
+```ts
+//接口中的属性会在合并时简单的合并到一个接口中
+interface Alarm {
+    price: number;
+}
+interface Alarm {
+    weight: number;
+}
+//相当于
+interface Alarm {
+    price: number;
+    weight: number;
+}
 
 
+//注意，合并的属性的类型必须是唯一的
+interface Alarm {
+    price: number;
+}
+interface Alarm {
+    price: string;  // 类型不一致，会报错
+    weight: number;
+}
+// Subsequent variable declarations must have the same type.  Variable 'price' must be of type 'number', but here has type 'string'.
 
 
+//接口中的方法合并，和函数一样
+interface Alarm {
+    price: number;
+    alert(s: string): string;
+}
+interface Alarm {
+    weight: number;
+    alert(s: string, n: number): string;
+}
+interface Alarm {
+    price: number;
+    weight: number;
+    alert(s: string): string;
+    alert(s: string, n: number): string;
+}
+```
+#### 类的合并
+```ts
+class Animal {
+    constructor(name) {
+        this.name = name;
+    }
+    col() {
+        console.log(999);
+    }
+}
+class Animal {
+    constructor(name) {
+        this.name = name;
+    }
+    sayHi() {
+        return `My name is ${this.name}`;
+    }
+}
+//合并规则跟接口合并一样
+class Animal {
+    constructor(name) {
+        this.name = name;
+    }
+    sayHi() {
+        return `My name is ${this.name}`;
+    }
+    col() {
+        console.log(999);
+    }
+}
+```
 
 
 
