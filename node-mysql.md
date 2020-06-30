@@ -50,3 +50,10 @@
 1. 连接数据库，可能报错
     - 执行`ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'luolei1992';`
 2. 
+
+
+
+
+### 补充内容
+1. md5密码加密：用node自带加密模块crypto封装
+2. token加密：jsonwebtoken加密

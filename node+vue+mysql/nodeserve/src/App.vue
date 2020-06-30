@@ -1,28 +1,28 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <router-view/>
+    <portal-target name="notification-confirm"></portal-target>
+    <portal-target name="notification-loading"></portal-target>
   </div>
 </template>
-
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
+  name: 'app',
+    mounted(){
+      (/iphone|ipod|ipad/i.test(navigator.appVersion)) && document.addEventListener('blur', (e) => {
+        // 这里加了个类型判断，因为a等元素也会触发blur事件
+        if(['input', 'textarea'].includes(e.target.localName)) {
+          setTimeout(()=> {
+            document.scrollingElement.scrollTo(0, document.scrollingElement.scrollTop);
+          }, 100);
+        }
+      }, true)
+    },
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="less">
+@import "./less/base.less";
+
 </style>
