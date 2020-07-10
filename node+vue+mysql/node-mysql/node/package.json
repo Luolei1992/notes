@@ -1,0 +1,18 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "test236.js",
+  "scripts": {
+    "start": "node test236.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "mysql": "^2.18.1"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1"
+  }
+}

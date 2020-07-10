@@ -1,0 +1,6 @@
+export const PARTONE = 'PARTONE'
+export const PARTWO = 'PARTWO'
+export const PARTTHREE = 'PARTTHREE'
+export const USERINFO = 'USERINFO'
+export const USERID = 'USERID'
+export const HOSPITALCODE = 'HOSPITALCODE'
