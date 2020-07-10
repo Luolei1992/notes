@@ -85,6 +85,8 @@ export default {
             this.setHospitalCode(this.hospitalCode||"")
             api.patInfoVerify(param).then(res => {
                 let data = res.data
+                console.log(res)
+                document.write(data)
                 if(data.code==0){
                     if(data.data.state){
                         // this.check()

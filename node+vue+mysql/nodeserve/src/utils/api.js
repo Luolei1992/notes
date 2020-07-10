@@ -3,7 +3,7 @@ const qs = require('qs');
 
 const urls = {
   // patInfoVerify:'/api/register',//注册
-  patInfoVerify:'/api/login',//登录
+  patInfoVerify:'/login',//登录
   // patInfoVerify:'/pe/his/patInfoVerify',//his校验
   check:'/pe/inquiryInfo/check',//填写校验
   saveInquiry:'/pe/inquiryInfo/saveInquiry',//保存
@@ -11,7 +11,7 @@ const urls = {
 
 export default {
   patInfoVerify(params){
-    return axios.post(urls.patInfoVerify,params)
+    return axios.get(urls.patInfoVerify,params)
   },
   check(params){
     return axios.post(urls.check,params)

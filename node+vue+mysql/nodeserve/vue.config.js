@@ -121,13 +121,13 @@ module.exports = {
       },
       // 查阅 https://github.com/vuejs/vue-doc-zh-cn/vue-cli/cli-service.md#配置代理
       proxy: {
-        '/api': {
+        '/': {
           /* 目标代理服务器地址 */
           // target: 'http://192.168.2.122:5050',
           // target: 'http://192.168.2.241:5860',
           // target: 'http://192.168.2.236:5860',
           // target: 'http://192.168.3.117:5860',
-          target: 'http://localhost:8088',
+          target: 'http://localhost:5050',
           /* 允许跨域 */
           changeOrigin: true,
           secure: false
