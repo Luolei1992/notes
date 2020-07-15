@@ -1,0 +1,74 @@
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+}
+/* 清理浮动 */
+.clearfix:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: "";
+    clear: both;
+    height: 0;
+    line-height:0;
+}
+
+.clearfix {
+    zoom: 1; /* for IE6 IE7 */
+}
+
+/* 单行文字溢出时出现省略号，需设定宽度 */
+.ellips {
+    overflow: hidden;
+    white-space: nowrap;    
+    text-overflow: ellipsis;
+}
+
+/* 定义主题色，根据location来切换不同的主题色 */
+@themeColor:#77dde7;
+
+/* 按钮公共样式 */
+.pubBtn {
+    border-radius: 5px;
+    color: #fff;
+    width: 5.6rem /* 420/75 */;
+    height: 1.066667rem /* 80/75 */;
+    line-height: 1.066667rem /* 80/75 */;
+    font-size: 16px;
+    display: block;
+    text-align: center;
+    position: relative;
+    top: 2rem /* 150/75 */;
+    left: 50%;
+    margin-left: -2.813333rem /* 211/75 */;
+}
+
+@media screen and (max-width:320px){/* 兼容iphone5 */
+    .symptomDes .arrorTop p {
+        padding-left: 0 !important;
+        text-align: right;
+    }
+    .resultSym {
+      // overflow: hidden;
+      // white-space: nowrap;    
+      // text-overflow: ellipsis;
+      // width: 110px;
+    }
+    .main .mainBtm .Recommend {
+      font-size: 14px !important;
+    }
+    .main .mainBtm .Recommend .btn {
+      padding: 0 10px !important;
+    }
+}
+  
+@media screen and (orientation: landscape) {
+
+  /*横屏 css*/
+  
+}
+  
+  
