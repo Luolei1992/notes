@@ -9,22 +9,13 @@
     <div id="container">
 
     </div>
-    <!-- <p>计算属性：</p>
-    <p>是否大于10？<span class="red">{{result}}</span></p>
-    <p>是否小于2？<span class="red">{{resultR}}</span></p>
-    <Plus/>
-    <Reduce/> -->
     <p class="next" @click="next">Next</p>
   </div>
 </template>
 
 <script>
 import api from '../utils/api';
-import Plus from './Plus';
-import Reduce from './Reduce';
-import {mapGetters} from 'vuex';
 import { Line } from '@antv/g2plot';
-const dataAll = require('../utils/data.json')
 export default {
   name: 'Home',
   data(){
@@ -34,29 +25,40 @@ export default {
       resultR:false,
       pool:['zhonghgf','wangfj','lixjm'],
       poolDetail:[],
-      data:dataAll||[]
+      linePlot:null,
+      data:[
+        { year: '1991', value: 3 },
+        { year: '1992', value: 4 },
+        { year: '1993', value: 3.5 },
+        { year: '1994', value: 5 },
+        { year: '1995', value: 4.9 },
+        { year: '1996', value: 6 },
+        { year: '1997', value: 7 },
+        { year: '1998', value: 9 },
+        { year: '1999', value: 13 },
+      ]
     }
   },
-  computed:{
-    ...mapGetters([
-      'filterNum',
-      'filterRNum'
-    ])
-  },
-  watch:{
-    filterNum:function(value){
-        this.result = this.filterNum;
-    },
-    filterRNum:function(value){
-        this.resultR = this.filterRNum;
-    },
-  },
   mounted () {
-    this.next()
+    // this.next()
     this.getNow()
   },
   methods:{
     next(){
+      let dataUpdata = [
+        { year: '1991', value: 3 },
+        { year: '1992', value: 4 },
+        { year: '1993', value: 3.5 },
+        { year: '1994', value: 5 },
+        { year: '1995', value: 4.9 },
+        { year: '1996', value: 6 },
+        { year: '1997', value: 7 },
+        { year: '1998', value: 9 },
+        { year: '1999', value: 13 },
+      ]
+      dataUpdata.push({ year: '2000', value: 9 })
+      this.linePlot.changeData(dataUpdata)
+      return
       // setInterval(()=>{
         api.login().then((res)=>{
           let result = res.data.data.split(';'),dataArr=[];
@@ -75,52 +77,40 @@ export default {
       // },3000)
     },
     getNow(){
-      let data = this.data
       const linePlot = new Line(document.getElementById('container'), {
         title: {
           visible: true,
-          text: '2000 ~ 2018 年各国家 GDP 趋势对比',
+          text: '折线图',
         },
         description: {
           visible: true,
-          text: '图形标签 (label) 位于折线尾部，用于标注整根折线，并有带有排名的含义在其中。',
+          text: '用平滑的曲线代替折线。',
         },
-        padding: [20, 100, 30, 80],
-        forceFit: true,
-        data,
-        xField: 'year',
-        yField: 'gdp',
-        seriesField: 'name',
-        xAxis: {
-          type: 'dateTime',
-          label: {
-            visible: true,
-            autoHide: true,
+        data:this.data,
+        smooth:{
+          spline:true,
+        },
+        meta: {
+          year: {
+            alias:'年份',
+            range: [0, 1],
           },
-        },
-        yAxis: {
-          formatter: (v) => `${(v / 10e8).toFixed(1)} B`,
-        },
-        legend: {
-          visible: false,
-        },
-        label: {
-          visible: true,
-          type: 'line',
+          value: {
+            alias: '数量',
+            formatter:(v)=>{return `${v}个`}
+          }
         },
         animation: {
           appear: {
             animation: 'clipingWithData',
           },
         },
-        smooth: true
+        xField: 'year',
+        yField: 'value',
       });
       linePlot.render();
+      this.linePlot = linePlot
     }
-  },
-  components:{
-    Plus,
-    Reduce
   }
 }
 </script>
