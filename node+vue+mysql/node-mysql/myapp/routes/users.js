@@ -11,7 +11,7 @@ router.get('/', function(req, res, next){
   // let urls = 'https://hq.sinajs.cn/etag.php?_=1594395505536&list=gb_$inx,gb_ixic'
   // let urls = 'https://hq.sinajs.cn/etag.php?rn=1594397110558&list=gb_aapl,gb_goog,gb_baba,gb_fb,gb_amzn,gb_bidu,gb_sina,gb_jd,gb_tsla,gb_intc'
   // let urls = 'http://hq.sinajs.cn/list=sz002129_i,sh600859_i,sz002475_i'
-  let urls = 'http://hq.sinajs.cn/list=sz002129,sh600859,sz002475'
+  let urls = 'http://hq.sinajs.cn/list=sh600585,sz000100,sz002475'
 
   var e=request({
       url:urls,

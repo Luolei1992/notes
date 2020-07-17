@@ -3,16 +3,17 @@
     <ul>
       <li v-for="(item,idx) in poolDetail">
         <span>{{pool[idx]}}: </span>
-        <span>{{item[0]}} | {{item[1]}} | {{item[2]}} | {{item[3]}} | {{item[4]}} | {{item[5]}} | {{item[6]}}</span>
+        <span>open:{{item[0]}} | now：{{item[6]}} | rate：{{((item[6]-item[0])/item[0]*100).toFixed(2)}}</span>
       </li>
     </ul>
     <div id="container">
 
     </div>
-    <p class="next" @click="next">Next</p>
+    <div id="containers">
+
+    </div>
   </div>
 </template>
-
 <script>
 import api from '../utils/api';
 import { Line } from '@antv/g2plot';
@@ -23,48 +24,31 @@ export default {
       msg:'',
       result:false,
       resultR:false,
-      pool:['zhonghgf','wangfj','lixjm'],
+      pool:['hlsn','tcl','lixjm'],
       poolDetail:[],
+      poolDetailShow:[],
+      poolDetailShowTcl:[],
       linePlot:null,
-      data:[
-        { year: '1991', value: 3 },
-        { year: '1992', value: 4 },
-        { year: '1993', value: 3.5 },
-        { year: '1994', value: 5 },
-        { year: '1995', value: 4.9 },
-        { year: '1996', value: 6 },
-        { year: '1997', value: 7 },
-        { year: '1998', value: 9 },
-        { year: '1999', value: 13 },
-      ]
+      linePlotTcl:null,
+      fst:true,
+      data:[],
+      yVal:1
+
     }
   },
   mounted () {
-    // this.next()
+    this.next()
     this.getNow()
+    this.getNows()
   },
   methods:{
     next(){
-      let dataUpdata = [
-        { year: '1991', value: 3 },
-        { year: '1992', value: 4 },
-        { year: '1993', value: 3.5 },
-        { year: '1994', value: 5 },
-        { year: '1995', value: 4.9 },
-        { year: '1996', value: 6 },
-        { year: '1997', value: 7 },
-        { year: '1998', value: 9 },
-        { year: '1999', value: 13 },
-      ]
-      dataUpdata.push({ year: '2000', value: 9 })
-      this.linePlot.changeData(dataUpdata)
-      return
-      // setInterval(()=>{
+      // return
+      setInterval(()=>{
         api.login().then((res)=>{
           let result = res.data.data.split(';'),dataArr=[];
           for(let i = 0;i < result.length;i++){
             let tmp = result[i].split('=')[1]
-            console.log(tmp)
             if(tmp){
               let temp = tmp.split(',')
               temp.splice(0,1)
@@ -72,45 +56,87 @@ export default {
             }
           }
           this.poolDetail = dataArr
-          console.log(dataArr)
+          let obj = {},tmpShowData=JSON.parse(JSON.stringify(this.poolDetailShow)),tmpShowDataTcl=JSON.parse(JSON.stringify(this.poolDetailShowTcl));
+          if(this.fst){
+            tmpShowData.push({time:1,value:Number(dataArr[0][0]),type:'hlsn'})
+            tmpShowData.push({time:1,value:Number(dataArr[2][0]),type:'lxjm'})
+            tmpShowDataTcl.push({time:1,value:Number(dataArr[1][0]),type:'tcl'})
+            this.fst = false
+          }
+          // console.log()
+          let y = this.yVal
+          this.yVal = ++y
+          tmpShowData.push({time:this.yVal,value:Number(dataArr[0][6]),type:'hlsn'})
+          tmpShowData.push({time:this.yVal,value:Number(dataArr[2][6]),type:'lxjm'})
+          tmpShowDataTcl.push({time:this.yVal,value:Number(dataArr[1][6]),type:'tcl'})
+          this.poolDetailShow = tmpShowData
+          this.poolDetailShowTcl = tmpShowDataTcl
+          this.linePlot.changeData(tmpShowData)
+          this.linePlotTcl.changeData(tmpShowDataTcl)
         })
-      // },3000)
+      },3000)
     },
     getNow(){
       const linePlot = new Line(document.getElementById('container'), {
-        title: {
-          visible: true,
-          text: '折线图',
-        },
+        // title: {
+        //   visible: true,
+        //   text: '折线图',
+        // },
         description: {
           visible: true,
           text: '用平滑的曲线代替折线。',
         },
-        data:this.data,
-        smooth:{
-          spline:true,
-        },
-        meta: {
-          year: {
-            alias:'年份',
-            range: [0, 1],
-          },
-          value: {
-            alias: '数量',
-            formatter:(v)=>{return `${v}个`}
-          }
-        },
+        // color:['#ccc'],
+        data:this.poolDetailShow,
+        // smooth:{
+        //   spline:true,
+        // },
         animation: {
           appear: {
-            animation: 'clipingWithData',
+            // animation: 'clipingWithData',
           },
         },
-        xField: 'year',
+        xField: 'time',
         yField: 'value',
+        seriesField: 'type',
+        yAxis:{
+          min:50
+        }
       });
       linePlot.render();
       this.linePlot = linePlot
+    },
+    getNows(){
+      const linePlotTcl = new Line(document.getElementById('containers'), {
+        // title: {
+        //   visible: true,
+        //   text: '折线图',
+        // },
+        description: {
+          visible: true,
+          text: '用平滑的曲线代替折线。',
+        },
+        // color:['#ccc'],
+        data:this.poolDetailShowTcl,
+        // smooth:{
+        //   spline:true,
+        // },
+        animation: {
+          appear: {
+            // animation: 'clipingWithData',
+          },
+        },
+        xField: 'time',
+        yField: 'value',
+        seriesField: 'type',
+        yAxis:{
+          min:6
+        }
+      });
+      linePlotTcl.render();
+      this.linePlotTcl = linePlotTcl
     }
+
   }
 }
 </script>
@@ -138,6 +164,4 @@ ul {
   line-height: 50px;
 }
 </style>
-
-
 
