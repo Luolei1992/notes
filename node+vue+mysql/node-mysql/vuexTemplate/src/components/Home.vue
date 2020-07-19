@@ -38,8 +38,8 @@ export default {
   },
   mounted () {
     this.next()
-    this.getNow()
-    this.getNows()
+    // this.getNow()
+    // this.getNows()
   },
   methods:{
     next(){

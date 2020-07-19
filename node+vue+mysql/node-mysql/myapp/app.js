@@ -5,13 +5,14 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var bodyParser = require('body-parser');
- 
+var jsonParser = bodyParser.json();
 // 创建 application/x-www-form-urlencoded 编码解析
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var app = express();
 var cors=require('cors');
+app.use(bodyParser.json()); 
 app.use(cors()); // 注入cors模块解决跨域
 // app.use(cors({
 //     origin:['http://192.168.2.236','http://localhost'],  //指定接收的地址
@@ -19,14 +20,15 @@ app.use(cors()); // 注入cors模块解决跨域
 //     alloweHeaders:['Content-Type','Authorization']  //指定header
 // }))
 //设置跨域允许被访问
-// app.all('*', function (req, res, next) {
-//   res.header('Access-Control-Allow-Origin', '*');
-//   //Access-Control-Allow-Headers ,可根据浏览器的F12查看,把对应的粘贴在这里就行
-//   res.header('Access-Control-Allow-Headers', 'Content-Type');
-//   res.header('Access-Control-Allow-Methods', '*');
-//   res.header('Content-Type', 'application/json;charset=utf-8');
-//   next();
-// });
+app.all('*', function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  //Access-Control-Allow-Headers ,可根据浏览器的F12查看,把对应的粘贴在这里就行
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header('Access-Control-Allow-Methods', '*');
+  // res.header('Content-Type', 'application/javascript; charset=GB18030');
+  res.header('Content-Type', 'application/javascript; charset=GBK');
+  next();
+});
 
 
 // view engine setup
@@ -43,7 +45,7 @@ app.use(express.static(path.join(__dirname, '/public')));
 // app.use('/css',express.static('./public/stylesheets'));
 // app.use('/js',express.static('./public/javascripts'));
 
-app.use('/',urlencodedParser, indexRouter);
+app.use('/search',jsonParser, indexRouter);
 app.use('/login',urlencodedParser, usersRouter);
 
 // catch 404 and forward to error handler
