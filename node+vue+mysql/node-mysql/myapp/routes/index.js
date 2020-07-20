@@ -1,8 +1,6 @@
 var express = require('express');
 var router = express.Router();
-
 var request=require('request');
-
 var bodyParser = require('body-parser');
 
 router.get('/', function(req, res, next) {
@@ -14,7 +12,7 @@ router.get('/', function(req, res, next) {
     method:'GET',
     headers:{'Content-Type':'application/javascript; charset=GBK'}
   },function(error,response,body){
-      res.send({'data':body } );
+      res.send({'data':body });
       // console.log(body,545555555555555555)
     });
 });

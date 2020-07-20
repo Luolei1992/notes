@@ -6,12 +6,12 @@ Vue.use(Router);
 const router = new Router({
   routes:[
     {
-      path:'/',
+      path:'/home',
       name:'Home',
       component:Home
     },
     {
-      path:'/page',
+      path:'/',
       name:'Page',
       component:Page
     },

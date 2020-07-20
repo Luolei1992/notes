@@ -26,7 +26,7 @@
       <a-tag
         v-for="tag in tags"
         :key="tag"
-        :color="tag > 0 ? 'red' : 'green'"
+        :color="tag > 0 ? '#ccc' : '#ccc'"
       >
         {{ tag>0?'+'+tag:tag }}%
       </a-tag>
@@ -45,44 +45,8 @@
   </div>
 </template>
 <script>
-import jsonp from 'fetch-jsonp';
-import querystring from 'querystring';
 import api from '../utils/api';
 
-let timeout;
-let currentValue;
-
-function fetch(value, callback) {
-  if (timeout) {
-    clearTimeout(timeout);
-    timeout = null;
-  }
-  currentValue = value;
-
-  function fake() {
-    const str = querystring.encode({
-      code: 'utf-8',
-      q: value,
-    });
-    jsonp(`https://suggest.taobao.com/sug?${str}`)
-      .then(response => response.json())
-      .then(d => {
-        if (currentValue === value) {
-          const result = d.result;
-          const data = [];
-          result.forEach(r => {
-            data.push({
-              value: r[0],
-              text: r[0],
-            });
-          });
-          callback(data);
-        }
-      });
-  }
-
-  timeout = setTimeout(fake, 300);
-}
 const columns = [
   {
     dataIndex: 'name',
@@ -139,9 +103,9 @@ export default {
       value: '',
       searchResult:[],
       poolDetail:[],
-      pool:['立讯精密','tcl','海螺水泥','中环股份','中航重科','比亚迪','牧原股份','双汇发展','伟明环保','三一重工'],
+      pool:['立讯精密','tcl','海螺水泥','中环股份','中航重科','比亚迪','牧原股份','双汇发展','伟明环保','三一重工','比音勒分'],
       // pool:['lixjm','tcl','hlsn','zhgf','zlzk','byd','mygf','shfz','wmhb','syzg'],
-      searchList:['sz002475','sz000100','sh600585','sz002129','sz000157','sz002594','sz002714','sz000895','sh603568','sh600031'],
+      searchList:['sz002475','sz000100','sh600585','sz002129','sz000157','sz002594','sz002714','sz000895','sh603568','sh600031','sz002832'],
       search:[]
     }
   },
@@ -200,11 +164,14 @@ export default {
               obj.name = this.pool[i]
               obj.today = Number(temp[0]).toFixed(2)
               obj.new = Number(temp[2]).toFixed(2)
-              obj.rate = [((temp[2]-temp[0])/temp[0]*100).toFixed(2)]
+              obj.rate = [((temp[2]-temp[1])/temp[0]*100).toFixed(2)]
               obj.num = (temp[2]-temp[0]).toFixed(2)
               obj.high = Number(temp[3]).toFixed(2)
               obj.last = Number(temp[1]).toFixed(2)
               obj.money = (temp[8]/100000000).toFixed(2)
+              if(obj.rate<-1&&obj.name=='立讯精密'){
+                alert(99)
+              }
               dataArr.push(obj)
             }
           }

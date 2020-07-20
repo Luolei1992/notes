@@ -65,7 +65,7 @@ module.exports = {
   devServer: {
       open: true,
       // host: '192.168.0.101',
-      host: '192.168.0.103',
+      host: '192.168.3.108',
       port: 8089,
       https: false,
       hotOnly: false,
@@ -77,7 +77,7 @@ module.exports = {
       proxy: {
         '/': {
           /* 目标代理服务器地址 */
-          target: 'http://localhost:5050',
+          target: 'http://192.168.3.108:5050',
           /* 允许跨域 */
           changeOrigin: true,
         },

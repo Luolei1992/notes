@@ -53,6 +53,47 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
+//钉钉消息发送
+// const ChatBot = require('dingtalk-robot-sender');
+// // 直接使用 webhook
+// const robot = new ChatBot({
+//   webhook: 'https://oapi.dingtalk.com/robot/send?access_token=e868521fa611305b4fea354af3c895286f5e7a0979e534f7112644e7b314e1dc'
+// });
+// 组合 baseUrl 和 accessToken 如果采用加签方式的安全设置，同时填写secret
+// const robot = new ChatBot({
+//   baseUrl: 'https://oapi.dingtalk.com/robot/send',
+//   accessToken: 'e868521fa611305b4fea354af3c895286f5e7a0979e534f7112644e7b314e1dc',
+//   secret: '',
+// });
+// 自定义 httpclient
+// const robot = new ChatBot({
+//   baseUrl: 'https://oapi.dingtalk.com/robot/send',
+//   accessToken: 'e868521fa611305b4fea354af3c895286f5e7a0979e534f7112644e7b314e1dc',
+//   secret: '',
+//   httpclient: require('urllib')
+// });
+// 发送钉钉消息
+// let textContent = {
+//   "msgtype": "text", 
+//   "text": {
+//     "content": "注意：都比来了"
+//   }, 
+//   "at": {
+//     "atMobiles": [
+//       "156xxxx8827", 
+//       "189xxxx8325"
+//     ], 
+//     "isAtAll": false
+//   }
+// }
+// robot.send(textContent)
+//   .then((res) => {
+//     // TODO
+//     console.log(res)
+//   });
+
+
+
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
