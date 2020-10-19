@@ -1,3 +1,13 @@
+## window环境安装gogs
+### 安装按照官网方式就可以
+### 注意
+    1. 先安装数据库，需新增数据库作为gogs数据存储
+    2. 安装NSSM注册服务
+    3. 配置文件（....\gogs\custom\conf）
+      - 配置RUN_USER本机用户名不能乱改否则无权限操作
+      - server中的地址端口改掉3000端口用的比较多避免冲突
+    4.启动服务用nssm启动nssm start gogs,不要用net start gogs
+    
 ## jenkins下载（选择Generic Java package (.war)）
 ### 安装：
  - 需要java环境8或者11（环境变量配置）
