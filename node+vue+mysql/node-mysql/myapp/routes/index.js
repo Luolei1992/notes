@@ -4,7 +4,7 @@ var request=require('request');
 var bodyParser = require('body-parser');
 
 router.get('/', function(req, res, next) {
-  console.log(res.query)
+  // console.log(res.query)
   let words = req.query.words
   let urls = 'http://suggest3.sinajs.cn/suggest/type=&key='+words+'&name=suggestdata_1595084911697'  //新浪自选股
   var e=request({

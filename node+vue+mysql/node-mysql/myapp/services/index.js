@@ -9,7 +9,7 @@ function homeDetail(req, res, next) {
     res.type('html');
     res.set('Content-Type', 'text/html')
     res.render('index') 
-    console.log(result,4545)
+    // console.log(result,4545)
   })
   // next()
 }

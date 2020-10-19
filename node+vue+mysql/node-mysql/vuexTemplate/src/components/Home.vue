@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <ul>
-      <li v-for="(item,idx) in poolDetail">
+      <li v-for="(item,idx) in poolDetail" :key="idx">
         <span>{{pool[idx]}}: </span>
         <span>open:{{item[0]}} | now：{{item[6]}} | rate：{{((item[6]-item[0])/item[0]*100).toFixed(2)}}</span>
       </li>
@@ -38,8 +38,8 @@ export default {
   },
   mounted () {
     this.next()
-    // this.getNow()
-    // this.getNows()
+    this.getNow()
+    this.getNows()
   },
   methods:{
     next(){

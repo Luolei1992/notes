@@ -21,16 +21,18 @@
     </div>
     <div class="line"></div>
     <a-table :columns="columns" :data-source="poolDetail" size="small" :pagination="false" :scroll="{ x: 600 }"> 
-      <a slot="name" slot-scope="text">{{ text }}</a>
+      <span slot="names" slot-scope="text" :style="{'color':select.indexOf(text)<0?'#ccc':'#000'}">
+        {{ text }}
+      </span>
       <span slot="tags" slot-scope="tags">
-      <a-tag
-        v-for="tag in tags"
-        :key="tag"
-        :color="tag > 0 ? '#ccc' : '#ccc'"
-      >
-        {{ tag>0?'+'+tag:tag }}%
-      </a-tag>
-    </span>
+        <a-tag
+          v-for="tag in tags"
+          :key="tag"
+          :color="tag > 0 ? '#ccc' : '#ccc'"
+        >
+          {{ tag>0?'+'+tag:tag }}%
+        </a-tag>
+      </span>
       <span slot="action" slot-scope="text, record">
         <a>Invite 一 {{ record.name }}</a>
         <a-divider type="vertical" />
@@ -39,6 +41,14 @@
         <a class="ant-dropdown-link"> More actions <a-icon type="down" /> </a>
       </span>
     </a-table>
+    <div>
+      <p>当前：{{goldList[0]&&goldList[0].split('\"')[1]}}</p>
+      <p>最高：{{goldList[4]}}</p>
+      <p>最低：{{goldList[5]}}</p>
+    </div>
+    <pre v-html="html">
+      {{html}}
+    </pre>
     <!-- <a-button size="small" block @click="back"> 
       Back
     </a-button> -->
@@ -54,6 +64,7 @@ const columns = [
     title:'name',
     fixed: 'left',
     width: 74,
+    scopedSlots: { customRender: 'names' }
   },
   {
     title: 'today',
@@ -103,16 +114,21 @@ export default {
       value: '',
       searchResult:[],
       poolDetail:[],
-      pool:['立讯精密','tcl','海螺水泥','中环股份','中航重科','比亚迪','牧原股份','双汇发展','伟明环保','三一重工','比音勒分'],
-      // pool:['lixjm','tcl','hlsn','zhgf','zlzk','byd','mygf','shfz','wmhb','syzg'],
-      searchList:['sz002475','sz000100','sh600585','sz002129','sz000157','sz002594','sz002714','sz000895','sh603568','sh600031','sz002832'],
-      search:[]
+      pool:['永辉超市','蓝帆医疗','康德莱','立讯精密','歌尔股份','山东药玻','海螺水泥','正川股份','三安光电','千方科技','比亚迪','华兰生物','中信证券'],
+      searchList:['sh601933','sz002382','sh603987','sz002475','sz002241','sh600529','sh600585','sh603976','sh600703','sz002373','sz002594','sz002007','sh600030'],
+      search:[],
+      goldList:[],
+      select:['千方科技','康德莱','蓝帆医疗','山东药玻'],
+      html:null
     }
   },
   mounted(){
+    this.getGold()
     this.searchVal()
+    this.getTxt()
     setInterval(()=>{
       this.getList()
+      this.getGold()
     },2500)
   },
   methods:{
@@ -121,6 +137,37 @@ export default {
     },
     handleSearch(value) {
       this.searchVal(value)
+    },
+    getTxt(){
+      api.readFile().then((res)=>{
+        let resultArr = res.data.data
+        var time = 1,plus=0,arr=['0']
+        for(let i = 0; i < resultArr.length; i++){
+            time = resultArr[i].length
+            plus+=time*100
+            arr.push(plus)
+            setTimeout(()=>{
+                // fs.writeFile('../public/txt.txt', i, function(err) {
+                //   if (err) {
+                //       throw err;
+                //   }
+                // });
+                this.html = data
+                console.log(''+i,resultArr[i])
+                // return resultArr[i]
+            },(arr[i-1]+1000*i))
+        }
+      })
+    },
+    getGold(){
+      api.gold().then((res)=>{
+        let data = res.data.data
+        let tmp = data.split("=")[1].split(',').splice(0,6)
+        this.goldList = tmp
+        if(tmp[0]&&tmp[0].split('\"')[1]<396.5){
+          alert(99)
+        }
+      })
     },
     handleChange(value) {
       this.value = value;
@@ -170,7 +217,7 @@ export default {
               obj.last = Number(temp[1]).toFixed(2)
               obj.money = (temp[8]/100000000).toFixed(2)
               if(obj.rate<-1&&obj.name=='立讯精密'){
-                alert(99)
+                
               }
               dataArr.push(obj)
             }

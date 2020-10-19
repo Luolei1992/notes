@@ -9,7 +9,10 @@ var jsonParser = bodyParser.json();
 // 创建 application/x-www-form-urlencoded 编码解析
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 var indexRouter = require('./routes/index');
+var goldRouter = require('./routes/gold');
 var usersRouter = require('./routes/users');
+var readRouter = require('./routes/read');
+var readFileRouter = require('./routes/readFile');
 var app = express();
 var cors=require('cors');
 app.use(bodyParser.json()); 
@@ -26,7 +29,7 @@ app.all('*', function (req, res, next) {
   res.header('Access-Control-Allow-Headers', 'Content-Type');
   res.header('Access-Control-Allow-Methods', '*');
   // res.header('Content-Type', 'application/javascript; charset=GB18030');
-  res.header('Content-Type', 'application/javascript; charset=GBK');
+  res.header('Content-Type', 'text/html; charset=utf-8');
   next();
 });
 
@@ -46,7 +49,10 @@ app.use(express.static(path.join(__dirname, '/public')));
 // app.use('/js',express.static('./public/javascripts'));
 
 app.use('/search',jsonParser, indexRouter);
+app.use('/gold',urlencodedParser, goldRouter);
 app.use('/login',urlencodedParser, usersRouter);
+app.use('/read',urlencodedParser, readRouter);
+app.use('/readFile',urlencodedParser, readFileRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
