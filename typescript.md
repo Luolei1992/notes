@@ -85,6 +85,7 @@ console.log(sayHello(user));
     let myFavoriteNumber: any = 'seven';
     myFavoriteNumber = 7;
     ```
+    
 
 > 在任意值上访问任何属性都是允许的：
 
