@@ -1,25 +1,5 @@
 <template>
   <div class="page">
-    <div class="search">
-      新增：
-      <a-select
-        show-search
-        :value="value"
-        placeholder="input search name or code"
-        style="width: 70%"
-        :default-active-first-option="false"
-        :show-arrow="false"
-        :filter-option="false"
-        :not-found-content="null"
-        @search="handleSearch"
-        @change="handleChange"
-      >
-        <a-select-option v-for="d in searchResult" :key="d.value">
-          {{ d.text }}
-        </a-select-option>
-      </a-select>
-    </div>
-    <div class="line"></div>
     <a-table :columns="columns" :data-source="poolDetail" size="small" :pagination="false" :scroll="{ x: 600 }"> 
       <span slot="names" slot-scope="text" :style="{'color':select.indexOf(text)<0?'#ccc':'#000'}">
         {{ text }}
@@ -49,9 +29,6 @@
     <pre v-html="html">
       {{html}}
     </pre>
-    <!-- <a-button size="small" block @click="back"> 
-      Back
-    </a-button> -->
   </div>
 </template>
 <script>
@@ -124,8 +101,6 @@ export default {
   },
   mounted(){
     this.getGold()
-    this.searchVal()
-    this.getTxt()
     setInterval(()=>{
       this.getList()
       this.getGold()
@@ -134,30 +109,6 @@ export default {
   methods:{
     back(){
       this.$router.go(-1)
-    },
-    handleSearch(value) {
-      this.searchVal(value)
-    },
-    getTxt(){
-      api.readFile().then((res)=>{
-        let resultArr = res.data.data
-        var time = 1,plus=0,arr=['0']
-        for(let i = 0; i < resultArr.length; i++){
-            time = resultArr[i].length
-            plus+=time*100
-            arr.push(plus)
-            setTimeout(()=>{
-                // fs.writeFile('../public/txt.txt', i, function(err) {
-                //   if (err) {
-                //       throw err;
-                //   }
-                // });
-                this.html = data
-                console.log(''+i,resultArr[i])
-                // return resultArr[i]
-            },(arr[i-1]+1000*i))
-        }
-      })
     },
     getGold(){
       api.gold().then((res)=>{
@@ -178,23 +129,6 @@ export default {
       this.searchList = tmplis
       this.pool = tmpool
       this.searchVal(value)
-    },
-    searchVal(value){
-      api.search({words:value||'lxjm'}).then((res)=>{
-        let result = res.data.data.split(';'),dataArr=[];
-        for(let i = 0;i < result.length;i++){
-          let tmp = result[i].split('=')[1]
-          let obj=  {key: i}
-          if(tmp){
-            let temp = tmp.split(',')
-            temp.splice(0,1)
-            obj.text = temp[2]
-            obj.value = temp[2]
-            dataArr.push(obj)
-          }
-        }
-        this.searchResult = dataArr
-      })
     },
     getList(){
       let param = {
