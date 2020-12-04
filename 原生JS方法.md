@@ -43,7 +43,7 @@
 > console.log(date.toString());  //同上效果相同
 
 ```
-var date = new Date();//
+var date = new Date();
     var year = date.getFullYear();//年
     var month = date.getMonth() + 1;//月
     if(month < 10) {

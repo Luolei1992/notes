@@ -91,11 +91,11 @@ export default {
       value: '',
       searchResult:[],
       poolDetail:[],
-      pool:['永辉超市','蓝帆医疗','康德莱','立讯精密','歌尔股份','山东药玻','海螺水泥','正川股份','三安光电','千方科技','比亚迪','华兰生物','中信证券'],
-      searchList:['sh601933','sz002382','sh603987','sz002475','sz002241','sh600529','sh600585','sh603976','sh600703','sz002373','sz002594','sz002007','sh600030'],
+      pool:['复星医药','永辉超市','蓝帆医疗','天山股份','立讯精密','歌尔股份','山东药玻','海螺水泥','正川股份','伊利股份','英特集团','比亚迪','华兰生物','中信证券'],
+      searchList:['sh600196','sh601933','sz002382','sz000877','sz002475','sz002241','sh600529','sh600585','sh603976','sh600887','sz000411','sz002594','sz002007','sh600030'],
       search:[],
       goldList:[],
-      select:['千方科技','康德莱','蓝帆医疗','山东药玻'],
+      select:['永辉超市','天山股份','英特集团','伊利股份'],
       html:null
     }
   },
@@ -115,7 +115,7 @@ export default {
         let data = res.data.data
         let tmp = data.split("=")[1].split(',').splice(0,6)
         this.goldList = tmp
-        if(tmp[0]&&tmp[0].split('\"')[1]<396.5){
+        if(tmp[0]&&tmp[0].split('\"')[1]<390.5){
           alert(99)
         }
       })
@@ -150,8 +150,8 @@ export default {
               obj.high = Number(temp[3]).toFixed(2)
               obj.last = Number(temp[1]).toFixed(2)
               obj.money = (temp[8]/100000000).toFixed(2)
-              if(obj.rate<-1&&obj.name=='立讯精密'){
-                
+              if(obj.rate<-8&&obj.name=='复星医药'){
+                alert(9999)
               }
               dataArr.push(obj)
             }
