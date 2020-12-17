@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+    <script src="https://cdn.bootcss.com/jquery/1.12.1/jquery.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    
+    <script>
+        $(function(){
+            function analyzeIDCard(IDCard){
+	var sexAndAge = {};
+	//获取用户身份证号码
+	var userCard = IDCard;
+	//如果身份证号码为undefind则返回空
+	if(!userCard){
+		return sexAndAge;
+	}
+	//获取性别
+	if(parseInt(userCard.substr(16,1)) % 2 == 1){
+		sexAndAge.sex = '1（男）'
+	}else{
+		sexAndAge.sex = '0（女）'
+	}
+	//获取出生年月日
+	//userCard.substring(6,10) + "-" + userCard.substring(10,12) + "-" + userCard.substring(12,14);
+	var yearBirth = userCard.substring(6,10);
+	var monthBirth = userCard.substring(10,12);
+	var dayBirth = userCard.substring(12,14);
+	//获取当前年月日并计算年龄
+	var myDate = new Date();
+	var monthNow = myDate.getMonth() + 1;
+	var dayNow = myDate.getDay();
+	var age = myDate.getFullYear() - yearBirth;
+	if(monthNow < monthBirth || (monthNow == monthBirth && dayNow < dayBirth)){
+		age--;
+	}
+	//得到年龄
+	sexAndAge.age = age+2;
+	//返回性别和年龄
+	return sexAndAge;
+}
+ 
+/*测试*/
+var ID = analyzeIDCard('411521199203251537');
+console.info(ID);
+            // $.ajax({
+            //     url: "https://ihweb-test.hfboehospital.com/api/ehis/openapi/virus/viruscheck",
+            //     type: "POST",
+            //     async: false,
+            //     headers:{
+            //         'Content-Type': 'application/json'
+            //         // 'Content-Type': 'application/x-www-form-urlencoded'
+            //     },
+            //     data: JSON.stringify({ 
+            //         "doctorId": "10", 
+            //         "mpiId": "179", 
+            //         "appId": "", 
+            //         "diagnosis": "建议您立刻前往附近医院的发热门诊就诊，并且佩戴好口罩做好防护。要求佩戴医用外科口罩或N95口罩，避免乘坐公共交通工具。", 
+            //         "detailList": [{ "question": "近14天有没有以下情况？", "answer": "有武汉（湖北）及周边地区或病例报告社区的旅居史" }, { "question": "是否有以下症状？", "answer": "鼻塞" }, { "question": "本次不舒服有多久了？", "answer": "14天以上" }], 
+            //         "department": "心血管内科门诊", 
+            //         "doctorName": "", 
+            //         "organName": "", 
+            //         "patientAge": "", 
+            //         "patientName": "戴侃萱", 
+            //         "patientSex": "" 
+            //     }),
+            //     dataType: "json",
+            //     withCredentials: true,//跨域设置
+            //     success: function (data) {
+            //         console.log(data);
+            //     },
+            //     error: function () {
+            //         console.log('fail');
+            //     }
+            // })
+        })
+    </script>
+</body>
+
+</html>
